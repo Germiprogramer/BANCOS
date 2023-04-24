@@ -2,31 +2,41 @@ from multiprocessing import Pool
 import unittest
 from classes import Banco
 
+def repeticion(funcion, n):
+    if n == 0:
+        return
+    else:
+        funcion()
+        repeticion(funcion, n-1)
+
 def main():
 
     banco1 = Banco(1000)
 
     #emplear pool.map para ingresar
 
-    po = Pool()
-    po.map_async(banco1.ingresar(100),range(40))
+    with Pool(processes=40) as pool:
+        pool.map_async(banco1.ingresar(100),range(40))
 
-    po2 = Pool()
-    po2.map_async(banco1.ingresar(50),range(20))
-
+    
+    
     po3 = Pool()
     po3.map_async(banco1.ingresar(20),range(60))
+    
 
     #emplear pool.map para retirar
 
     po = Pool()
     po.map_async(banco1.retirar(100),range(40))
+    
 
     po2 = Pool()
     po2.map_async(banco1.retirar(50),range(20))
+   
 
     po3 = Pool()
     po3.map_async(banco1.retirar(20),range(60))
+
 
 
 
